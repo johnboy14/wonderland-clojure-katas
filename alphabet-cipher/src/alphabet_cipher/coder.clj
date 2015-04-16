@@ -8,16 +8,13 @@
 (defn construct-keyword [keyword message]
   (take (count message) (cycle keyword)))
 
-(defn encode-char [key-char msg-char]
-  (let [offset (mod (+ (get-char-idx msg-char) (get-char-idx key-char)) 26)]
-    (nth alphabet offset)))
-
-(defn decode-char [key-char msg-char]
-  (let [offset (mod (- (get-char-idx msg-char) (get-char-idx key-char)) 26)]
-    (nth alphabet offset)))
+(defn translate-char [shift-fn]
+  (fn [key-char msg-char]
+    (->> (mod (shift-fn (get-char-idx msg-char) (get-char-idx key-char)) 26)
+         (nth alphabet))))
 
 (defn encode [keyword message]
-  (reduce str (map encode-char (construct-keyword keyword message) (seq message))))
+  (reduce str (map (translate-char +) (construct-keyword keyword message) (seq message))))
 
 (defn decode [keyword message]
-  (reduce str (map decode-char (construct-keyword keyword message) (seq message))))
+  (reduce str (map (translate-char -) (construct-keyword keyword message) (seq message))))
