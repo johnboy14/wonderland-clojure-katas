@@ -8,13 +8,16 @@
 (defn construct-keyword [keyword message]
   (take (count message) (cycle keyword)))
 
+(defn pair-messages [keyword message]
+  (map list (construct-keyword keyword message) message))
+
 (defn translate-char [shift-fn]
-  (fn [key-char msg-char]
-    (->> (mod (shift-fn (get-char-idx msg-char) (get-char-idx key-char)) 26)
+  (fn [pair]
+    (->> (mod (shift-fn (get-char-idx (nth pair 1)) (get-char-idx (first pair))) 26)
          (nth alphabet))))
 
 (defn encode [keyword message]
-  (reduce str (map (translate-char +) (construct-keyword keyword message) (seq message))))
+  (transduce (map (translate-char +)) str (pair-messages keyword message)))
 
 (defn decode [keyword message]
-  (reduce str (map (translate-char -) (construct-keyword keyword message) (seq message))))
+  (transduce (map (translate-char -)) str (pair-messages keyword message)))
