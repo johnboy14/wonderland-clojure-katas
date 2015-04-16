@@ -12,12 +12,12 @@
   (map list (construct-keyword keyword message) message))
 
 (defn translate-char [shift-fn]
-  (fn [pair]
-    (->> (mod (shift-fn (get-char-idx (nth pair 1)) (get-char-idx (first pair))) 26)
-         (nth alphabet))))
+  (map (fn [pair] 
+         (->> (mod (shift-fn (get-char-idx (nth pair 1)) (get-char-idx (first pair))) 26) 
+              (nth alphabet)))))
 
 (defn encode [keyword message]
-  (transduce (map (translate-char +)) str (pair-messages keyword message)))
+  (transduce (translate-char +) str (pair-messages keyword message)))
 
 (defn decode [keyword message]
-  (transduce (map (translate-char -)) str (pair-messages keyword message)))
+  (transduce (translate-char -) str (pair-messages keyword message)))
