@@ -8,6 +8,19 @@
         rank ranks]
     [suit rank]))
 
-(defn play-round [player1-card player2-card])
+(defn highest-rank [card1 card2]
+  (cond
+    (> (.indexOf ranks (last card1)) (.indexOf ranks (last card2))) card1
+    (= (.indexOf ranks (last card1)) (.indexOf ranks (last card2))) nil
+    :else card2))
+
+(defn highest-suit [card1 card2]
+  (cond
+    (> (.indexOf suits (first card1)) (.indexOf suits (first card2))) card1
+    :else card2))
+
+(defn play-round [player1-card player2-card]
+  (or (highest-rank player1-card player2-card)
+      (highest-suit player1-card player2-card)))
 
 (defn play-game [player1-cards player2-cards])
