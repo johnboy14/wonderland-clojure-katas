@@ -23,4 +23,17 @@
   (or (highest-rank player1-card player2-card)
       (highest-suit player1-card player2-card)))
 
-(defn play-game [player1-cards player2-cards])
+(defn play-game [player1-cards player2-cards]
+  (loop [player1 player1-cards
+         player2 player2-cards]
+    (cond
+      (empty? player1) "Player 2 Wins!!"
+      (empty? player2) "Player 1 Wins!!" 
+      :else (if (= (first player1) (play-round (first player1) (first player2))) 
+              (recur (vec (rest (conj player1 (first player1) (first player2)))) 
+                     (vec (rest player2))) 
+              (recur (vec (rest player1))
+                     (vec (rest (conj player2 (first player2) (first player1)))))))))
+
+(defn deal-cards []
+  )
