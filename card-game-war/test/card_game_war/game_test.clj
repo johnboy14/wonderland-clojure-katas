@@ -23,6 +23,8 @@
 (deftest test-play-game
   (testing "the player loses when they run out of cards"
     (is (= "Player 1 Wins!!" (play-game [[:spade 2] [:club 5]] [[:heart 1]])))
-    (is (= "Player 2 Wins!!" (play-game [[:spade 1]] [[:heart 2]])))
-    ))
+    (is (= "Player 2 Wins!!" (play-game [[:spade 1]] [[:heart 2]]))))
+  (testing "somebody wins"
+    (let [deck (deal-cards)]
+      (is (not-empty (play-game (:p1 deck) (:p2 deck)))))))
 
