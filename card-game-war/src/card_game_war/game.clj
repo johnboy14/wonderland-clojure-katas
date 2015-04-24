@@ -36,11 +36,5 @@
                      (vec (rest (conj player2 (first player2) (first player1)))))))))
 
 (defn deal-cards []
-  (loop [deck (shuffle cards)
-         player1-cards []
-         player2-cards []]
-    (if (empty? deck)
-      {:p1 player1-cards :p2 player2-cards}
-      (recur (vec (drop 2 deck)) 
-             (conj player1-cards (first deck)) 
-             (conj player2-cards (nth deck 1))))))
+  (let [cards (apply vector (partition 2 (shuffle cards)))]
+    {:p1 (first cards) :p2 (last cards)}))
