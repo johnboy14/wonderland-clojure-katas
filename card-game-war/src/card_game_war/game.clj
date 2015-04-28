@@ -36,5 +36,5 @@
                      (vec (rest (conj player2 (first player2) (first player1)))))))))
 
 (defn deal-cards []
-  (let [cards (apply vector (partition 2 (shuffle cards)))]
+  (let [cards (apply map vector (partition 2 (shuffle cards)))]
     {:p1 (first cards) :p2 (last cards)}))
